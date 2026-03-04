@@ -25,11 +25,17 @@ export default function MenuPage() {
         fetch("/api/products")
             .then((res) => res.json())
             .then((data) => {
-                setProducts(data);
+                if (Array.isArray(data)) {
+                    setProducts(data);
+                } else {
+                    console.error("API did not return an array:", data);
+                    setProducts([]);
+                }
                 setLoading(false);
             })
             .catch((err) => {
                 console.error("Error loading products:", err);
+                setProducts([]);
                 setLoading(false);
             });
     }, []);
